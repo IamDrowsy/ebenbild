@@ -23,8 +23,8 @@
   (->pred [this]
     (cond
       (= ANY this) (constantly true)
-      (namespace this)  (fn [x] (if (keyword? x) (= this x) #_(this x)))
-      :else (fn [x] (if (keyword? x) (= (name this) (name x)) #_(this x)))))
+      (namespace this)  (fn [x] (if (keyword? x) (= this x)))
+      :else (fn [x] (if (keyword? x) (= (name this) (name x))))))
   Fn
   (->pred [this] this)
   String
