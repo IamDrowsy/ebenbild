@@ -6,14 +6,15 @@ Can be used to match maps by examples.
 To find all persons whose name includes "Bob" you could write 
 ```clojure
 (def persons [{:name "Bob" :age 31} {:name "Al" :age 32} {:name "Cory" :age 44}])
+
 (filter (like {:name "Bob"}) persons)
 => ({:name "Bob" :age 31})
 ```
 
 ## Usage
-Ebenbild basically consists of two functions: `like` and `like?`.
+Ebenbild consists of two functions: `like` and `like?`.
 
-* `(like arg)` takes some arg and returns a predicate that matches **look-a-likes** of the given arg.
+* `(like arg)` returns a predicate that matches **look-a-likes** of the given arg.
 * `(like? arg compare-to)` generates a predicate using `(like arg)` and runs it calls it on `compare-to`.
  **When using a predicate more than one time you should use `like` instead of `like?`.**
  
