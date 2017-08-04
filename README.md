@@ -15,7 +15,7 @@ To find all persons whose name includes "Bob" you could write
 Ebenbild consists of two functions: `like` and `like?`.
 
 * `(like arg)` returns a predicate that matches **look-a-likes** of the given arg.
-* `(like? arg compare-to)` generates a predicate using `(like arg)` and runs it calls it on `compare-to`.
+* `(like? arg compare-to)` generates a predicate using `(like arg)` and calls it on `compare-to`.
  **When using a predicate more than one time you should use `like` instead of `like?`.**
  
 ### So what are look-a-likes?
@@ -49,7 +49,7 @@ Depending on the given arg, `like` will generate predicates that match as follow
     * `(like? ANY "Foo") => true`
  * everything else will fall back to a equality check using `=`.
  
- You can extend `like` by extending the `EbenbildPred` Protocol, but the following behaviour is built in:
+ You can extend `like` by extending the `EbenbildPred` Protocol.
 
  
 ## License
