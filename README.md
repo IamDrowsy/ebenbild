@@ -24,6 +24,9 @@ You can extend like by extending the `EbenbildPred` Protocol, but the following 
     * `(like? {:a "A"} {:a "BAB" :b 123}) => true`
     * `(like? {:a {:b "A"}} {:a {:b "LAL" :c 1}}) true`
     * `(like? {:a 1} {:a "A"}) => false`
+ * `IPersistentVector`
+    * `(like? ["1" {:a 1} ["A"]] ["A1A" {:a 1 :b 2 :c 3} ["XA"]]) => true`  
+    * `(like? [1 2] [1 2 3]) => false`
  * `ANY` (a symbol in the core namespace), will always return true.
     * `(like? ANY 1) => true`
     * `(like? ANY "Foo") => true`

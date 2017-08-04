@@ -7,8 +7,9 @@
             [clojure.test.check.properties :as prop]))
 
 ;Any is not good at creating simple stuff, so we add them
+;we exclude NaN as it doesn't fulfill the identity prop with = and acts weird as array map key
 (def real-any
-  (gen/one-of [gen/any gen/int gen/string gen/keyword gen/double]))
+  (gen/one-of [gen/any gen/int gen/string gen/keyword (gen/double* {:NaN? false})]))
 
 (defspec prop-identity
          200
@@ -32,7 +33,7 @@
 
 
 (defspec prop-map
-         100
+         50
          (prop/for-all [m (gen/not-empty (gen/map real-any real-any))]
                        (let [[k v] (first m)]
                          (and ((like {k v}) m)
@@ -50,7 +51,9 @@
     (is (like? {:a {:b "A"}} {:a {:b "LAL" :c 1}}))
     (is (not (like? {:a 1} {:a "A"})))
     (is (like? ANY 1))
-    (is (like? ANY "Foo"))))
+    (is (like? ANY "Foo"))
+    (is (like? ["1" {:a 1} ["A"]] ["A1A" {:a 1 :b 2 :c 3} ["XA"]]))
+    (is (not (like? [1 2] [1 2 3])))))
 
 
 
