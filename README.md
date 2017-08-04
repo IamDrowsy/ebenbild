@@ -3,9 +3,11 @@
 A tiny library to get predicates from example data. 
 
 Can be used to match maps by examples.
-To find all Persons whose Name includes "Bob" you could write 
+To find all persons whose name includes "Bob" you could write 
 ```clojure
-(filter (like {:Name "Bob"}) persons)
+(def persons [{:name "Bob" :age 31} {:name "Al" :age 32} {:name "Cory" :age 44}])
+(filter (like {:name "Bob"}) persons)
+=> ({:name "Bob" :age 31})
 ```
 
 ## Usage
@@ -16,7 +18,7 @@ Ebenbild basically consists of two functions: `like` and `like?`.
  **When using a predicate more than one time you should use `like` instead of `like?`.**
  
 ### So what are look-a-likes?
-Depending on the given arg, `like` will match act as follows:
+Depending on the given arg, `like` will generate predicates that match as follows:
 
  * `Fn` assumes that it's already a predicate and just returns it.
     * `(like? even? 4) => true`
