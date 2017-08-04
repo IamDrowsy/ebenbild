@@ -3,7 +3,10 @@
 A tiny library to get predicates from example data. 
 
 Can be used to match maps by examples.
-To find all Persons whose Name includes "Bob" you could write `(filter (like {:Name "Bob"}) persons)`.
+To find all Persons whose Name includes "Bob" you could write 
+```clojure
+(filter (like {:Name "Bob"}) persons)
+```
 
 ## Usage
 Ebenbild basically consists of two functions: `like` and `like?`.
@@ -31,7 +34,7 @@ Depending on the given arg, `like` will match act as follows:
     * `(like? :a/a :a/a) => true`
  * `Map` calls like on all vals (recursively) and matches another map if all keys are contained and their vals match.
     * `(like? {:a "A"} {:a "BAB" :b 123}) => true`
-    * `(like? {:a {:b "A"}} {:a {:b "LAL" :c 1}}) true`
+    * `(like? {:a {:b "A"}} {:a {:b "LAL" :c 1}})  => true`
     * `(like? {:a 1} {:a "A"}) => false`
  * `IPersistentVector` calls like on all entries (recursively) and matches any sequential with the same number of elements 
  where all entries match the corresponding predicate.
