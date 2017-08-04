@@ -1,4 +1,4 @@
-(defproject ebenbild "0.1.0"
+(defproject ebenbild "0.1.0-SNAPSHOT"
   :description "tiny library to create predicates from different data that match on \"look-a-likes\""
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
