@@ -12,6 +12,11 @@ To find all persons whose name includes "Bob" you could write
 ```
 
 ## Usage
+Simply add the following entry to your `:dependencies`:
+```
+[ebenbild "0.1.0"]
+```
+
 Ebenbild consists of two functions: `like` and `like?`.
 
 * `(like arg)` returns a predicate that matches **look-a-likes** of the given arg.

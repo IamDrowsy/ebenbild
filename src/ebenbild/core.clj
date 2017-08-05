@@ -47,7 +47,7 @@
                      ks)))))
   IPersistentVector
   (->pred [this]
-    (let [p-vec (into [] (map ->pred this))]
+    (let [p-vec (vec (map ->pred this))]
       (fn [x]
         (and (sequential? x) (= (count p-vec) (count x))
              (every? identity (map (fn [p v] (p v)) p-vec x))))))
