@@ -16,6 +16,11 @@
 (defprotocol EbenbildPred
   (->pred [this]))
 
+(defn- pred-vec
+  "Returns a vector of predicates."
+  [datas]
+  (vec (map ->pred datas)))
+
 (extend-protocol EbenbildPred
   Number
   (->pred [this] (fn [x] (= x this)))
@@ -47,10 +52,10 @@
                      ks)))))
   IPersistentVector
   (->pred [this]
-    (let [p-vec (vec (map ->pred this))]
+    (let [p-vec (pred-vec this)]
       (fn [x]
         (and (sequential? x) (= (count p-vec) (count x))
-             (every? identity (map (fn [p v] (p v)) p-vec x))))))
+             (every? identity (map (fn [p x] (p x)) p-vec x))))))
   Object
   (->pred [this]
     (fn [x] (= this x)))
@@ -78,3 +83,10 @@ ANY -> matches everything."
   When using the predicate more then one time, consider using 'like' instead."
   [data compare-to]
   ((like data) compare-to))
+
+(defn any
+  "Creates a predicate that checks if any of the given data matches (using like)."
+  [& datas]
+  (let [juxt-pred (apply juxt (pred-vec datas))]
+    (fn [x]
+      (some identity (juxt-pred x)))))

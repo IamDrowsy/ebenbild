@@ -17,7 +17,7 @@ Simply add the following entry to your `:dependencies`:
 [ebenbild "0.1.0"]
 ```
 
-Ebenbild consists of two functions: `like` and `like?`.
+Ebenbild consists of two core functions: `like` and `like?`.
 
 * `(like arg)` returns a predicate that matches **look-a-likes** of the given arg.
 * `(like? arg compare-to)` generates a predicate using `(like arg)` and calls it on `compare-to`.
@@ -56,6 +56,10 @@ Depending on the given arg, `like` will generate predicates that match as follow
  
  You can extend `like` by extending the `EbenbildPred` Protocol.
 
+### Other functions
+Ebenbild provides some functions often used with like.
+
+* `(any x y z ...)` returns a predicate that matches if any given data is a look-a-like
  
 ## License
 
