@@ -61,6 +61,13 @@ Ebenbild provides some functions often used with like.
 
 * `(any x y z ...)` returns a predicate that matches if any given data is a look-a-like
  
+### Properties of ebenbild predicates
+The following properties should hold for every predicate created with `like`. 
+Please create an issue if you find some edge case that doesn't.
+
+1. `(like? x x)`/`((like x) x)` is always true.
+2. The predicate throws no errors.
+ 
 ## License
 
 Copyright © 2017 Albrecht Schmidt
