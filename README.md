@@ -59,13 +59,14 @@ Depending on the given arg, `like` will generate predicates that match as follow
 ### Other functions
 Ebenbild provides some functions often used with like.
 
-* `(any x y z ...)` returns a predicate that matches if any given data is a look-a-like
+* `(or x y z ...)` returns a predicate that matches if any given data is a look-a-like
  
 ### Properties of ebenbild predicates
 The following properties should hold for every predicate created with `like`. 
 Please create an issue if you find some edge case that doesn't.
 
 1. `(like? x x)`/`((like x) x)` is always true.
+    1. with the exeption of functions and regexes
 2. The predicate throws no errors.
  
 ## License

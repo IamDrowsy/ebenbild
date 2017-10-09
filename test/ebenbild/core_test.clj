@@ -38,14 +38,14 @@
                   (and ((like {k v}) m)
                        (not ((like {k v}) (dissoc m k)))))))
 
-(defspec any-test
-  200
-  (prop/for-all [x real-any
-                 y real-any
-                 z real-any]
-    (and (like? (any x y z) x)
-         (like? (any x y z) y)
-         (like? (any x y z) z))))
+(defspec or-test
+         200
+         (prop/for-all [x real-any
+                        y real-any
+                        z real-any]
+                       (and (like? (or x y z) x)
+                            (like? (or x y z) y)
+                            (like? (or x y z) z))))
 
 (deftest readme-examples
   (testing "Examples from the Readme"
@@ -68,8 +68,8 @@
     (is (like? [1 2 3] '(1 2 3)))
     (is (like? ["1" {:a 1} ["A"]] ["A1A" {:a 1 :b 2 :c 3} ["XA"]]))
     (is (not (like? [1 2] [1 2 3])))
-    (is (like? (any "A" "B" "C") "C"))
-    (is (not (like? (any "A" "B" "C") "E")))))
+    (is (like? (or "A" "B" "C") "C"))
+    (is (not (like? (or "A" "B" "C") "E")))))
 
 
 

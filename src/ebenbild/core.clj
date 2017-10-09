@@ -84,8 +84,8 @@ ANY -> matches everything."
   [data compare-to]
   ((like data) compare-to))
 
-(defn any
-  "Creates a predicate that checks if any of the given data matches (using like)."
+(defn or
+  "Creates a predicate that checks if (at least) one of the given data matches (using like)."
   [& datas]
   (let [juxt-pred (apply juxt (pred-vec datas))]
     (fn [x]
