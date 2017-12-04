@@ -80,13 +80,41 @@ ANY -> matches everything."
 
 (defn like?
   "Creates a predicate using 'like' and calls it with the second arg.
-  When using the predicate more then one time, consider using 'like' instead."
+  When using the predicate more then one time, you should use 'like'."
   [data compare-to]
   ((like data) compare-to))
 
-(defn or
-  "Creates a predicate that checks if (at least) one of the given data matches (using like)."
+(defn unlike
+  "Returns a predicate that is the complement of (like data)"
+  [data]
+  (complement (like data)))
+
+(defn unlike?
+  "Creates a predicate using 'unlike' and calls it with the second arg.
+  When using the predictae more then one time, you should use 'unlike'"
+  [data compare-to]
+  ((unlike data) compare-to))
+
+(defn like-one
+  "Creates a predicate that checks if (at least) one of the given data matches (using like).
+  It is semanticly equivalent to (or (like data1) (like data2) ...)."
   [& datas]
-  (let [juxt-pred (apply juxt (pred-vec datas))]
+  (let [preds (pred-vec datas)]
     (fn [x]
-      (some identity (juxt-pred x)))))
+      (loop [[p & ps] preds]
+        (cond
+          (and p (p x)) #_=> true
+          (nil? p)      #_=> false
+          :else         #_=> (recur ps))))))
+
+(defn like-all
+  "Creates a predicate that check if all of the given data matches (using like)
+  It is semanticly equivalent to (and (like data1) (like data2) ...)."
+  [& datas]
+  (let [preds (pred-vec datas)]
+    (fn [x]
+      (loop [[p & ps] preds]
+        (cond
+          (and p (p x)) #_=> (recur ps)
+          (nil? p)      #_=> true
+          :else         #_=> false)))))

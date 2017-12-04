@@ -38,14 +38,23 @@
                   (and ((like {k v}) m)
                        (not ((like {k v}) (dissoc m k)))))))
 
-(defspec or-test
+(defspec like-one-test
          200
          (prop/for-all [x real-any
                         y real-any
                         z real-any]
-                       (and (like? (or x y z) x)
-                            (like? (or x y z) y)
-                            (like? (or x y z) z))))
+                       (and (like? (like-one x y z) x)
+                            (like? (like-one x y z) y)
+                            (like? (like-one x y z) z))))
+
+(defspec like-all-test
+  200
+  (prop/for-all [x real-any
+                 y real-any
+                 z real-any]
+    (and (not (like? (like-all x y z) x))
+         (not (like? (like-all x y z) y))
+         (not (like? (like-all x y z) z)))))
 
 (deftest readme-examples
   (testing "Examples from the Readme"
@@ -68,8 +77,17 @@
     (is (like? [1 2 3] '(1 2 3)))
     (is (like? ["1" {:a 1} ["A"]] ["A1A" {:a 1 :b 2 :c 3} ["XA"]]))
     (is (not (like? [1 2] [1 2 3])))
-    (is (like? (or "A" "B" "C") "C"))
-    (is (not (like? (or "A" "B" "C") "E")))))
+    (is ((like-one "A" "B" "C") "C"))
+    (is (not ((like-one "A" "B" "C") "E")))
+    (is ((like-all "A" "B" "C") "ABC"))
+    (is (not ((like-all "A" "B" "C") "ABD")))
+    (let [f (like {:Type (like-one :simple :complex)})]
+      (is (f {:Type :simple}))
+      (is (f {:Type :complex}))
+      (is (not (f {:Type :other}))))
+    (is ((apply like-all ["A" "B" "C"]) "ABC"))
+    (is (not ((apply like-one ["A" "B" "C"]) "D")))))
+
 
 
 
