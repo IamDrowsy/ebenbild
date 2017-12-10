@@ -14,22 +14,28 @@
 (defspec prop-identity
   200
   (prop/for-all [x real-any]
-                ((like x) x)))
+                (true? ((like x) x))))
+
+(defspec prop-unlike
+  200
+  (prop/for-all [x real-any]
+                (not= ((like x) x) ((unlike x) x))))
 
 (defspec prop-should-not-fail
   200
   (prop/for-all [x real-any
                  y real-any]
-                (or ((like x) y) true)))
+                (let [r ((like x) y)]
+                  (or (true? r) (false? r)))))
 
 (defspec prop-substring
   200
   (prop/for-all [s1 gen/string
                  s2 gen/string
                  s3 gen/string]
-    (and (like? s1 (str s1 s2 s3))
-         (like? s2 (str s1 s2 s3))
-         (like? s3 (str s1 s2 s3)))))
+    (and (true? (like? s1 (str s1 s2 s3)))
+         (true? (like? s2 (str s1 s2 s3)))
+         (true? (like? s3 (str s1 s2 s3))))))
 
 (defspec prop-map
   50
@@ -43,53 +49,48 @@
          (prop/for-all [x real-any
                         y real-any
                         z real-any]
-                       (and (like? (like-one x y z) x)
-                            (like? (like-one x y z) y)
-                            (like? (like-one x y z) z))))
+                       (and (true? (like? (like-one x y z) x))
+                            (true? (like? (like-one x y z) y))
+                            (true? (like? (like-one x y z) z)))))
 
 (defspec like-all-test
   200
   (prop/for-all [x real-any
                  y real-any
                  z real-any]
-    (and (not (like? (like-all x y z) x))
-         (not (like? (like-all x y z) y))
-         (not (like? (like-all x y z) z)))))
+    (and (false? (like? (like-all x y z) x))
+         (false? (like? (like-all x y z) y))
+         (false? (like? (like-all x y z) z)))))
 
 (deftest readme-examples
   (testing "Examples from the Readme"
-    (is (like? even? 4))
-    (is (not (like? even? 5)))
-    (is (like? "AB" "elvABuunre"))
-    (is (not (like? "AB" "CANRIBAean")))
-    (is (like? #"[a-z]" "a"))
-    (is (not (like? #"[a-z]" "az")))
-    (is (like? :a :a))
-    (is (not (like? :a/a :a)))
-    (is (like? :a :a/a))
-    (is (like? :a/a :a/a))
-    (is (not (like? :b/a :a/a)))
-    (is (like? {:a "A"} {:a "BAB" :b 123}))
-    (is (like? {:a {:b "A"}} {:a {:b "LAL" :c 1}}))
-    (is (not (like? {:a 1} {:a "A"})))
-    (is (like? ANY 1))
-    (is (like? ANY "Foo"))
-    (is (like? [1 2 3] '(1 2 3)))
-    (is (like? ["1" {:a 1} ["A"]] ["A1A" {:a 1 :b 2 :c 3} ["XA"]]))
-    (is (not (like? [1 2] [1 2 3])))
-    (is ((like-one "A" "B" "C") "C"))
-    (is (not ((like-one "A" "B" "C") "E")))
-    (is ((like-all "A" "B" "C") "ABC"))
-    (is (not ((like-all "A" "B" "C") "ABD")))
+    (is (true? (like? even? 4)))
+    (is (false? (like? even? 5)))
+    (is (true? (like? "AB" "elvABuunre")))
+    (is (false? (like? "AB" "CANRIBAean")))
+    (is (true? (like? #"[a-z]" "a")))
+    (is (false? (like? #"[a-z]" "az")))
+    (is (true? (like? :a :a)))
+    (is (false? (like? :a/a :a)))
+    (is (true? (like? :a :a/a)))
+    (is (true? (like? :a/a :a/a)))
+    (is (false? (like? :b/a :a/a)))
+    (is (true? (like? {:a "A"} {:a "BAB" :b 123})))
+    (is (true? (like? {:a {:b "A"}} {:a {:b "LAL" :c 1}})))
+    (is (false? (like? {:a 1} {:a "A"})))
+    (is (true? (like? ANY 1)))
+    (is (true? (like? ANY "Foo")))
+    (is (true? (like? [1 2 3] '(1 2 3))))
+    (is (true? (like? ["1" {:a 1} ["A"]] ["A1A" {:a 1 :b 2 :c 3} ["XA"]])))
+    (is (false? (like? [1 2] [1 2 3])))
+    (is (true? ((like-one "A" "B" "C") "C")))
+    (is (false? ((like-one "A" "B" "C") "E")))
+    (is (true? ((like-all "A" "B" "C") "ABC")))
+    (is (false? ((like-all "A" "B" "C") "ABD")))
     (let [f (like {:Type (like-one :simple :complex)})]
-      (is (f {:Type :simple}))
-      (is (f {:Type :complex}))
-      (is (not (f {:Type :other}))))
-    (is ((apply like-all ["A" "B" "C"]) "ABC"))
-    (is (not ((apply like-one ["A" "B" "C"]) "D")))))
-
-
-
-
-
+      (is (true? (f {:Type :simple})))
+      (is (true? (f {:Type :complex})))
+      (is (false? (f {:Type :other}))))
+    (is (true? ((apply like-all ["A" "B" "C"]) "ABC")))
+    (is (false? ((apply like-one ["A" "B" "C"]) "D")))))
 

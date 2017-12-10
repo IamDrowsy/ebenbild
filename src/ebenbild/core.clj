@@ -28,8 +28,8 @@
   (->pred [this]
     (cond
       (= ANY this) (constantly true)
-      (namespace this)  (fn [x] (if (keyword? x) (= this x)))
-      :else (fn [x] (if (keyword? x) (= (name this) (name x))))))
+      (namespace this)  (fn [x] (if (keyword? x) (= this x) false))
+      :else (fn [x] (if (keyword? x) (= (name this) (name x)) false))))
   Fn
   (->pred [this] this)
   String
@@ -39,23 +39,31 @@
   Pattern
   (->pred [this]
     (fn [x]
-        (and (string? x)
-             (re-matches this x))))
+        (if
+          (and (string? x) (re-matches this x))
+          true
+          false)))
   Map
   (->pred [this]
     (let [p-map (update-all this ->pred)
           ks (keys p-map)]
       (fn [x]
-        (and (map? x)
-             (every? (fn [k]
-                       ((get p-map k) (get x k)))
-                     ks)))))
+        (if
+          (and (map? x)
+               (every? (fn [k]
+                         ((get p-map k) (get x k)))
+                       ks))
+          true
+          false))))
   IPersistentVector
   (->pred [this]
     (let [p-vec (pred-vec this)]
       (fn [x]
-        (and (sequential? x) (= (count p-vec) (count x))
-             (every? identity (map (fn [p x] (p x)) p-vec x))))))
+        (if
+          (and (sequential? x) (= (count p-vec) (count x))
+               (every? identity (map (fn [p x] (p x)) p-vec x)))
+          true
+          false))))
   Object
   (->pred [this]
     (fn [x] (= this x)))

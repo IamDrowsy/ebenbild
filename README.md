@@ -69,7 +69,9 @@ Please create an issue if you find some edge case that doesn't.
 
 1. `(like? x x)`/`((like x) x)` is always true.
     1. with the exeption of functions and regexes
-2. The predicate throws no errors.
+2. The predicate always returns `true` or `false`
+3. The predicate throws no errors.
+
 
 ### Further notices
 Because `like/unlike/like-one/like-all` returns predicates and `(like predicate)` 
@@ -77,7 +79,7 @@ returns the predicate itself, you can nest different `like`. For example
 ```clojure
 (like {:Type (like-one :simple :complex))
 ``` 
-returns a predicate thet matches every map that has a `:Type` key with either `:simple` 
+returns a predicate that matches every map that has a `:Type` key with either `:simple` 
 or `:complex` as the value.
 
 Because `like-one/like-all` are functions (unlike clojure.core `or/and`) you can
