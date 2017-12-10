@@ -14,7 +14,7 @@ To find all persons whose name includes "Bob" you could write
 ## Usage
 Simply add the following entry to your `:dependencies`:
 ```
-[ebenbild "0.1.0"]
+[ebenbild "0.1.1"]
 ```
 
 Ebenbild consists of two core functions: `like` and `like?`.
@@ -67,10 +67,10 @@ Ebenbild provides some functions often used with like.
 The following properties should hold for every predicate created with `like`. 
 Please create an issue if you find some edge case that doesn't.
 
-1. `(like? x x)`/`((like x) x)` is always true.
-    1. with the exeption of functions and regexes
-2. The predicate always returns `true` or `false`
-3. The predicate throws no errors.
+1. **Identity:** `(like? x x)`/`((like x) x)` is always true.
+    1. with the exception of functions and regexes
+2. **Just Predicates:** The predicate always returns `true` or `false`
+3. **Failsafe:** The predicate throws no errors.
 
 
 ### Further notices
