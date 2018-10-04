@@ -1,5 +1,7 @@
 # ebenbild
 
+[![cljdoc badge](https://cljdoc.xyz/badge/ebenbild/ebenbild)](https://cljdoc.xyz/d/ebenbild/ebenbild/CURRENT)
+
 A tiny library to get predicates from example data. 
 
 Can be used to match maps by examples.
