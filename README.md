@@ -1,6 +1,6 @@
 # ebenbild
 
-[![cljdoc badge](https://cljdoc.xyz/badge/ebenbild/ebenbild)](https://cljdoc.xyz/d/ebenbild/ebenbild/CURRENT)
+[![cljdoc badge](https://cljdoc.org/badge/ebenbild/ebenbild)](https://cljdoc.org/d/ebenbild/ebenbild/CURRENT)
 [![Clojars Project](https://img.shields.io/clojars/v/ebenbild.svg)](https://clojars.org/ebenbild)
 
 A tiny library to get predicates from example data. 
