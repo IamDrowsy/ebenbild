@@ -2,6 +2,7 @@
 
 [![cljdoc badge](https://cljdoc.org/badge/ebenbild/ebenbild)](https://cljdoc.org/d/ebenbild/ebenbild/CURRENT)
 [![Clojars Project](https://img.shields.io/clojars/v/ebenbild.svg)](https://clojars.org/ebenbild)
+[![CircleCI](https://circleci.com/gh/IamDrowsy/ebenbild.svg?style=svg)](https://circleci.com/gh/IamDrowsy/ebenbild)
 
 A tiny library to get predicates from example data. 
 
