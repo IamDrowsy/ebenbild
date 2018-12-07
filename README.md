@@ -4,7 +4,7 @@
 [![Clojars Project](https://img.shields.io/clojars/v/ebenbild.svg)](https://clojars.org/ebenbild)
 [![CircleCI](https://circleci.com/gh/IamDrowsy/ebenbild.svg?style=svg)](https://circleci.com/gh/IamDrowsy/ebenbild)
 
-A tiny library to get predicates from example data. 
+A tiny library to get predicates from example data for Clojure(Script)
 
 Can be used to match maps by examples.
 To find all persons whose name includes "Bob" you could write 
@@ -18,7 +18,7 @@ To find all persons whose name includes "Bob" you could write
 ## Usage
 Simply add the following entry to your `:dependencies`:
 ```
-[ebenbild "0.1.1"]
+[ebenbild "0.2.0"]
 ```
 
 Ebenbild consists of two core functions: `like` and `like?`.
@@ -91,7 +91,7 @@ apply them on seqs of data to get a predictate that matches look-a-likes for one
  
 ## License
 
-Copyright © 2017 Albrecht Schmidt
+Copyright © 2018 Albrecht Schmidt
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.

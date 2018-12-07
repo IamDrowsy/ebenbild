@@ -1,8 +1,8 @@
 (ns ebenbild.core
   (:require [clojure.string :as str])
-  (:import (clojure.lang Keyword Fn IPersistentVector)
-           (java.util.regex Pattern)
-           (java.util Map)))
+  #?(:clj (:import (clojure.lang Keyword Fn IPersistentVector)
+                   (java.util.regex Pattern)
+                   (java.util Map))))
 
 (defn update-all
   "Updates all map vals with the given fn"
@@ -21,41 +21,49 @@
   [datas]
   (vec (map ->pred datas)))
 
+(defn map->pred [this]
+  (let [p-map (update-all this ->pred)
+        ks (keys p-map)]
+    (fn [x]
+      (if
+        (and (map? x)
+             (every? (fn [k]
+                       ((get p-map k) (get x k)))
+                     ks))
+        true
+        false))))
+
+
 (extend-protocol EbenbildPred
-  Number
+  #?(:clj java.lang.Number :cljs number)
   (->pred [this] (fn [x] (= x this)))
-  Keyword
+  #?(:clj clojure.lang.Keyword :cljs cljs.core/Keyword)
   (->pred [this]
     (cond
       (= ANY this) (constantly true)
       (namespace this)  (fn [x] (if (keyword? x) (= this x) false))
       :else (fn [x] (if (keyword? x) (= (name this) (name x)) false))))
-  Fn
+  #?(:clj clojure.lang.Fn :cljs function)
   (->pred [this] this)
-  String
+  #?(:clj java.lang.String :cljs string)
   (->pred [this] (fn [x]
                    (and (string? x)
                         (str/includes? x this))))
-  Pattern
+  #?(:clj java.util.regex.Pattern :cljs js/RegExp)
   (->pred [this]
     (fn [x]
         (if
           (and (string? x) (re-matches this x))
           true
           false)))
-  Map
+  #?(:clj java.util.Map :cljs cljs.core/PersistentArrayMap)
   (->pred [this]
-    (let [p-map (update-all this ->pred)
-          ks (keys p-map)]
-      (fn [x]
-        (if
-          (and (map? x)
-               (every? (fn [k]
-                         ((get p-map k) (get x k)))
-                       ks))
-          true
-          false))))
-  IPersistentVector
+    (map->pred this))
+  #?@(:cljs [cljs.core/PersistentHashMap
+             (->pred [this] (map->pred this))
+             cljs.core/PersistentTreeMap
+             (->pred [this] (map->pred this))])
+  #?(:clj clojure.lang.IPersistentVector :cljs cljs.core/PersistentVector)
   (->pred [this]
     (let [p-vec (pred-vec this)]
       (fn [x]
@@ -64,7 +72,7 @@
                (every? identity (map (fn [p x] (p x)) p-vec x)))
           true
           false))))
-  Object
+  #?(:clj Object :cljs default)
   (->pred [this]
     (fn [x] (= this x)))
   nil
@@ -74,15 +82,16 @@
 (defn like
   "Creates a predicate from different objects.
    Uses the EbenbildPred Protocol.
+
    Default Options are:
-Fn -> just assumes its already a pred,
-String -> matches if the string is included,
-Pattern -> matches the exact pattern,
-Number -> matches the number
-Keyword -> matches other keywords with equal (if given no namespace will match only on name).
-Map -> calls like on all keys and matches if all vals of the map are matching.
-Vector -> calls like on all elements, matches all seqs of the same size whose elements match the given vector.
-ANY -> matches everything."
+* Fn -> just assumes its already a pred,
+* String -> matches if the string is included,
+* Pattern -> matches the exact pattern,
+* Number -> matches the number
+* Keyword -> matches other keywords with equal (if given no namespace will match only on name).
+* Map -> calls like on all keys and matches if all vals of the map are matching.
+* Vector -> calls like on all elements, matches all seqs of the same size whose elements match the given vector.
+* ANY -> matches everything."
   [data]
   (->pred data))
 
@@ -126,3 +135,7 @@ ANY -> matches everything."
           (and p (p x)) #_=> (recur ps)
           (nil? p)      #_=> true
           :else         #_=> false)))))
+
+#_ (do (require 'cljs.repl)
+       (require 'cljs.repl.node)
+       (cemerick.piggieback/cljs-repl (cljs.repl.node/repl-env)))
