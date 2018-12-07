@@ -18,7 +18,7 @@
 
 (def number-test-runs
   #?(:clj 200
-     :cljs 100))
+     :cljs 40))
 
 (defspec prop-identity
   number-test-runs
